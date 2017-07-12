@@ -1,14 +1,9 @@
----
-title: "Illinois Governor’s Race Contributions Project"
-output: html_document
----
-
 
 ## Welcome!
 This is the git home for the project to catalog and visualize contributions to 
 candidates in the Illinois 2018 governor's race.
 
-###Organizers
+### Organizers
 - Stephanie Kirmer
 - Lilian Huang 
 - Andy Moon
