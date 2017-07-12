@@ -9,7 +9,8 @@ candidates in the Illinois 2018 governor's race.
 - Andy Moon
 
 ### How to get involved
-Join us on this repo, on [data.world](https://data.world/lilianhj/ilgov-2018), and/or join us at ChiHackNight in Chicago on
+Join us on this repo, on [data.world](https://data.world/lilianhj/ilgov-2018), 
+and/or join us at [ChiHackNight](https://chihacknight.org) in Chicago on
 every other Tuesday evening. 
 Also, check out our Issues section to find out where we are in the project's tasks and how you can dive in.
 
