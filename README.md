@@ -15,6 +15,7 @@ every other Tuesday evening. Our channel on the ChiHackNight Slack is #ilgov2018
 Also, check out our Issues section to find out where we are in the project's tasks and how you can dive in.
 
 ### Upcoming Meeting Dates
-- July 25
-- August 8
 - August 22
+- September 5
+- September 19
+- October 3
