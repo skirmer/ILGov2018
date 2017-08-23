@@ -3,9 +3,9 @@ title: ilgov
 account: skirmer
 server: shinyapps.io
 appId: 199533
-bundleId: 915919
+bundleId: 950457
 url: https://skirmer.shinyapps.io/ilgov/
-when: 1501031709.94973
+when: 1503453532.44095
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: README.md
