@@ -6,7 +6,7 @@ candidates in the Illinois 2018 governor's race.
 ### Organizers
 - Stephanie Kirmer
 - Lilian Huang 
-- Andy Moon
+- Rahul Subramanian
 
 ### How to get involved
 Join us on this repo, on [data.world](https://data.world/lilianhj/ilgov-2018), 
@@ -15,7 +15,6 @@ every other Tuesday evening. Our channel on the ChiHackNight Slack is #ilgov2018
 Also, check out our Issues section to find out where we are in the project's tasks and how you can dive in.
 
 ### Upcoming Meeting Dates
-- August 22
-- September 5
-- September 19
-- October 3
+- September 19 (focusing on adding industry classifications to organizations)
+- October 3 (Starting mapping and GIS, looking at in state vs out of state donors)
+- October 17 
