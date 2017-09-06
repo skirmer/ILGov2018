@@ -17,6 +17,7 @@ library(ggvis)
 library(plotly)
 library(tm)
 library(lubridate)
+library(magrittr)
 
 
 #### LOAD DATA SOURCE ####
@@ -27,17 +28,19 @@ df <- read.csv("https://query.data.world/s/62mtjijsocj6llwcy33he3r6e", header=TR
 
 df$received_date <- as.Date(df$received_date)
 df$year <- lubridate::year(df$received_date)
-
+df$corporation_name <- ifelse(nchar(df$first_name) == 0, df$last_name, NA)
+df$last_name <- ifelse(is.na(df$corporation_name), df$last_name, NA)
 # Prepare to display
-df2 <- unique(df[,c("candidate_name","last_name","first_name","received_date","year","amount"
-                    , "aggregate_amount", "occupation", "employer", "city", "state", "id","committee_id", "filed_doc_id")])
+df2 <- unique(df[,c("candidate_name","last_name","first_name","corporation_name","received_date","year","amount"
+                    , "aggregate_amount", "occupation", "city", "state", "id","committee_id", "filed_doc_id")])
 
 
-colnames(df2) <- c("Candidate Name","Donor Last Name","Donor First Name","Date of Donation", "Year of Donation"
-                   ,"Amount of Donation", "Amount per Filing", "Donor Occupation", "Donor Employer"
+colnames(df2) <- c("Candidate Name","Donor Last Name","Donor First Name","Organization","Date of Donation", "Year of Donation"
+                   ,"Amount of Donation", "Amount per Filing", "Donor Occupation"
                    , "Donor City", "Donor State", "Record ID","Committee ID", "Filing ID")
 
 df2 <- filter(df2, df2$`Year of Donation` >= 2015)
+
 
 server <- function(input, output) {
   #the server - literally what data is going into the plot/viz?
@@ -84,8 +87,8 @@ server <- function(input, output) {
                                                           data <- dplyr::filter(data, `Year of Donation` == input$Year)
                                                       }
                                                       
-                                                      if(input$Employer != "All"){
-                                                        data <- dplyr::filter(data, `Donor Employer` %in% input$Employer)
+                                                      if(input$Corporation != "All"){
+                                                        data <- dplyr::filter(data, `Organization` %in% input$Organization)
                                                       }
                                                         
                                                       if(input$Surname != "All"){
@@ -107,8 +110,7 @@ server <- function(input, output) {
   
   output$intro <- renderText("Welcome! To start exploring the data, click over to the plot or table tabs.
                              Quick Reference:
-                             Donor employer does not necessarily indicate that the company or 
-                             employing organization endorses or otherwise supports the donation or candidate."
+                             Corporation indicates that no individual is listed for that donation, but instead a corporate entity gave the funds."
                              )
 }
 
@@ -140,9 +142,9 @@ ui <- fluidPage(
                             c("All", sort(trimws(unique(as.character(df2$`Year of Donation`)))))))
     
     , column(3,
-             selectizeInput("Employer",
-                            "Donor Employer:",
-                            c(Choose = '', "All", sort(trimws(unique(as.character(df2$`Donor Employer`)))))
+             selectizeInput("Organization",
+                            "Organization:",
+                            c(Choose = '', "All", sort(trimws(unique(as.character(df2$`Organization`)))))
                             , multiple = TRUE, selected = "All"))
 
     , column(3,
@@ -166,11 +168,24 @@ ui <- fluidPage(
                                   <BR/>
                                   Reference Notes: <BR/>
                                   <ul>
-                                  <li>Donor employer does not necessarily indicate that the company or employing 
-                                 organization endorses or otherwise supports the donation or candidate.
+                                  <li>Organization indicates that a corporation, union, or other entity gave the funds, but no individual's name was associated.
                                  </li>
                                 <li> For a full data dictionary, please visit <a href=https://data.world/lilianhj/ilgov-2018/workspace/data-dictionary>our data.world page</a>.
                                  </ul>
+<BR/>
+Candidate Platforms:
+<ul>
+<li> Bruce Rauner (incumbent): <a href=https://www.brucerauner.com/issues/>https://www.brucerauner.com/issues/</a></li>
+<li> JB Pritzker: <a href=https://www.jbpritzker.com/vision/>https://www.jbpritzker.com/vision/</a></li>
+<li> Ameya Pawar: <a href=https://www.pawar2018.com/issues/>https://www.pawar2018.com/issues/</a></li>
+<li> Daniel Biss: <a href=https://www.danielbiss.com/the-issues/>https://www.danielbiss.com/the-issues/</a></li>
+<li> Robert Daiber: <a href=http://bobdaiber.com/issues#Issues>http://bobdaiber.com/issues#Issues</a> </li>
+<li> Scott Drury: <a href=https://drive.google.com/file/d/0B2iD02dMsK-FUXZxM1FTMmJ1bkhpYTM4OFNQSlM3VmR0Y19v/view>https://drive.google.com/file/d/0B2iD02dMsK-FUXZxM1FTMmJ1bkhpYTM4OFNQSlM3VmR0Y19v/view</a> </li>
+<li> Chris Kennedy: <a href=https://kennedyforillinois.com/about/>https://kennedyforillinois.com/about/</a></li>
+</ul>
+<BR/>
+<BR/>
+
                                  Please note, this website is a continuous work in progress and we love feedback and ideas. Please visit us at the data.world and github sites linked at the top of this page to help!")), 
         tabPanel("Table", DT::dataTableOutput("table")),
         tabPanel("Plot", plotlyOutput("barplot"))
