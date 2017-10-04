@@ -75,6 +75,7 @@ server <- function(input, output) {
                                                       })
                                                       
                                                       data_filter <- reactive({
+                                                        
                                                         if(input$Candidate != "All"){
                                                           data <- dplyr::filter(data, `Candidate Name` == input$Candidate)
                                                         }
@@ -86,22 +87,23 @@ server <- function(input, output) {
                                                       if(input$Year != "All"){
                                                           data <- dplyr::filter(data, `Year of Donation` == input$Year)
                                                       }
-                                                      
-                                                      if(input$Corporation != "All"){
+
+                                                      if(input$Organization != "All"){
                                                         data <- dplyr::filter(data, `Organization` %in% input$Organization)
                                                       }
-                                                        
+
                                                       if(input$Surname != "All"){
                                                         data <- dplyr::filter(data, `Donor Last Name` %in% input$Surname)
                                                       }
-                                                      
+
                                                       if(input$City != "All"){
                                                         data <- dplyr::filter(data, `Donor City` == input$City)
                                                       }
-                                                      
+
                                                       if(input$State != "All"){
                                                         data <- dplyr::filter(data, `Donor State` == input$State)
                                                       }
+                                                        
                                                       data
                                                       })
                                                       
@@ -140,7 +142,7 @@ ui <- fluidPage(
              selectizeInput("Year",
                             "Year of Donation:",
                             c("All", sort(trimws(unique(as.character(df2$`Year of Donation`)))))))
-    
+
     , column(3,
              selectizeInput("Organization",
                             "Organization:",
