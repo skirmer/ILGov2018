@@ -187,6 +187,9 @@ Candidate Platforms:
 </ul>
 <BR/>
 <BR/>
+The data in this app comes from <a href=http://www.elections.il.gov/>Illinois State Board of Elections</a> via <a href=https://illinoissunshine.org/>Illinois Sunshine</a>, a project by the <a href=http://www.ilcampaign.org/>Illinois Campaign for Political Reform (ICPR)</a>. This project is not affiliated with ICPR, and neither this project nor ICPR endorse any of the candidates or parties shown in the app. 
+<BR/>
+<BR/>
 
                                  Please note, this website is a continuous work in progress and we love feedback and ideas. Please visit us at the data.world and github sites linked at the top of this page to help!")), 
         tabPanel("Table", DT::dataTableOutput("table")),
