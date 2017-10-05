@@ -1,12 +1,16 @@
 
 ## Welcome!
-This is the git home for the project to catalog and visualize contributions to 
-candidates in the Illinois 2018 governor's race.
+This is a page for my contributions to the project to catalog and visualize contributions to 
+candidates in the Illinois 2018 governor's race (Forked from skirmer/ILGov2018 )
+
+I created a bubble plot for the R Shiny app that visualizes the details of the donations for each candidate. Each bubble is a donation, color-coded by whether it was from an individual or an organization. The size of the bubble is proporational to the amount of the donation. Hovering over the bubble shows the Candidate name, Amount of donation, name of the donor, and occupation.
+
 
 ### Organizers
 - Stephanie Kirmer
 - Lilian Huang 
 - Rahul Subramanian
+
 
 ### How to get involved
 Join us on this repo, on [data.world](https://data.world/lilianhj/ilgov-2018), 
