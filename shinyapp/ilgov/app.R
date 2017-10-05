@@ -2,6 +2,11 @@
 # S. Kirmer #
 # July 2017 #
 
+# S.Somayajula#
+# Fixed bug data$Corporation -> data$Organization#
+# Added visualization of details of donations per candidate as bubble chart. Each bubble is one donation, colored by
+# whether it is an individual or organization. Hovering over the bubble gives the donor's name and occupation
+
 # Set up location
 # setwd("ILGov2018/shinyapp/ilgov/")
 # Put in the token data from shinyapps.io profile
@@ -28,7 +33,7 @@ df <- read.csv("https://query.data.world/s/62mtjijsocj6llwcy33he3r6e", header=TR
 
 df$received_date <- as.Date(df$received_date)
 df$year <- lubridate::year(df$received_date)
-df$corporation_name <- ifelse(nchar(df$first_name) == 0, df$last_name, NA)
+df$corporation_name <- ifelse(nchar(df$first_name) ==  0, df$last_name, NA)
 df$last_name <- ifelse(is.na(df$corporation_name), df$last_name, NA)
 # Prepare to display
 df2 <- unique(df[,c("candidate_name","last_name","first_name","corporation_name","received_date","year","amount"
@@ -41,6 +46,9 @@ colnames(df2) <- c("Candidate Name","Donor Last Name","Donor First Name","Organi
 
 df2 <- filter(df2, df2$`Year of Donation` >= 2015)
 
+df2$amtbin <- cut(df2$`Amount of Donation`, breaks= c(-Inf, 1000, 10000, 100000, 1000000, 100000000), labels = c("Less than $1000", "$1000 to $10K", "$10k to $100k", "$100k to 1M", "More than 1M"))
+df2$Iscorp = ifelse(!is.na(df2$Organization),"Organization", "Individual")
+
 
 server <- function(input, output) {
   #the server - literally what data is going into the plot/viz?
@@ -52,20 +60,24 @@ server <- function(input, output) {
                                                         
                                                         data2 <- data_filter() %>%
                                                           group_by(`Candidate Name`) %>%
+                                                          
                                                           summarize(
                                                             donations = n()
                                                             , amount = sum(`Amount of Donation`)
                                                           )
                                                         
+                                                        
                                                         plot1 <- ggplot(data2, aes(x=`Candidate Name`, y=`amount`
                                                                                          , fill=factor(`amount`)
                                                                                          , label=`amount`))+
-                                                        theme_bw()+
+                                                       theme_bw()+
                                                         theme(axis.text.x = element_text(angle = 45, vjust=.5),
                                                               legend.position = "none")+
                                                         geom_bar(stat="identity")+
                                                         labs(title = "Donations to Candidates", x="Candidate Name", y="Amount Given")
                                                       
+                                                        
+                                                        
             
                                                       #plot1
                                                       gp <- ggplotly(plot1, width = 1000, height = 600)
@@ -73,6 +85,40 @@ server <- function(input, output) {
                                                       gp %>% layout(margin = list(l=90, r=60, t=60, b=90))
                                                       
                                                       })
+                                                      
+                                                      output$plot2 <- renderPlotly({
+                                                        
+                                                        data2 <- data_filter() %>%
+                                                          group_by(`Candidate Name`) %>%
+                                                          
+                                                          summarize(
+                                                            donations = n()
+                                                            , amount = sum(`Amount of Donation`)
+                                                          )
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        plot2 <- ggplot(df2,aes(x=`Candidate Name`, y = `amtbin`, text = paste('Candidate Name:', df2$`Candidate Name`,'<br>Amount of Donation:', df2$`Amount of Donation`, '<br>Donor:', ifelse(df2$Iscorp=="Individual",paste(df2$`Donor First Name`,df2$`Donor Last Name`, '<br> Donor occupation:',df2$`Donor Occupation`),df2$Organization))))+
+                                                        geom_jitter(aes(size = `Amount of Donation`,colour = `Iscorp`, alpha = 0.1), width = 0.2)+
+                                                        scale_size_continuous(breaks = c(100, 1000, 100000, 1000000),  range= c(1,15))+
+                                                          guides(alpha = FALSE)+
+                                                          guides(colour = guide_legend(title=NULL)) +
+                                                          guides(size = FALSE)+
+                                                          
+                                                          labs(title = "Details of Donations to Candidates", x="Candidate Name", y="Amount Given")
+                                                        
+                                                        
+                                                           
+                                                        
+                                                        
+                                                        #plot2
+                                                        gp2 <- ggplotly(plot2, width = 1000, height = 600, tooltip = c("text"))
+                                                        gp2 %>% layout(margin= list(l=120, r=60, t=60, b = 90))
+                                                        
+                                                        
+                                                      })
+                                                      
                                                       
                                                       data_filter <- reactive({
                                                         if(input$Candidate != "All"){
@@ -87,7 +133,7 @@ server <- function(input, output) {
                                                           data <- dplyr::filter(data, `Year of Donation` == input$Year)
                                                       }
                                                       
-                                                      if(input$Corporation != "All"){
+                                                      if(input$Organization != "All"){
                                                         data <- dplyr::filter(data, `Organization` %in% input$Organization)
                                                       }
                                                         
@@ -188,7 +234,8 @@ Candidate Platforms:
 
                                  Please note, this website is a continuous work in progress and we love feedback and ideas. Please visit us at the data.world and github sites linked at the top of this page to help!")), 
         tabPanel("Table", DT::dataTableOutput("table")),
-        tabPanel("Plot", plotlyOutput("barplot"))
+        tabPanel("Plot", plotlyOutput("barplot")),
+        tabPanel("Plot of donation details", plotlyOutput("plot2"))
 ))
   
 
