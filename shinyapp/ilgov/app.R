@@ -75,6 +75,7 @@ server <- function(input, output) {
                                                       })
                                                       
                                                       data_filter <- reactive({
+                                                        
                                                         if(input$Candidate != "All"){
                                                           data <- dplyr::filter(data, `Candidate Name` == input$Candidate)
                                                         }
@@ -86,22 +87,23 @@ server <- function(input, output) {
                                                       if(input$Year != "All"){
                                                           data <- dplyr::filter(data, `Year of Donation` == input$Year)
                                                       }
-                                                      
-                                                      if(input$Corporation != "All"){
+
+                                                      if(input$Organization != "All"){
                                                         data <- dplyr::filter(data, `Organization` %in% input$Organization)
                                                       }
-                                                        
+
                                                       if(input$Surname != "All"){
                                                         data <- dplyr::filter(data, `Donor Last Name` %in% input$Surname)
                                                       }
-                                                      
+
                                                       if(input$City != "All"){
                                                         data <- dplyr::filter(data, `Donor City` == input$City)
                                                       }
-                                                      
+
                                                       if(input$State != "All"){
                                                         data <- dplyr::filter(data, `Donor State` == input$State)
                                                       }
+                                                        
                                                       data
                                                       })
                                                       
@@ -140,7 +142,7 @@ ui <- fluidPage(
              selectizeInput("Year",
                             "Year of Donation:",
                             c("All", sort(trimws(unique(as.character(df2$`Year of Donation`)))))))
-    
+
     , column(3,
              selectizeInput("Organization",
                             "Organization:",
@@ -183,6 +185,9 @@ Candidate Platforms:
 <li> Scott Drury: <a href=https://drive.google.com/file/d/0B2iD02dMsK-FUXZxM1FTMmJ1bkhpYTM4OFNQSlM3VmR0Y19v/view>https://drive.google.com/file/d/0B2iD02dMsK-FUXZxM1FTMmJ1bkhpYTM4OFNQSlM3VmR0Y19v/view</a> </li>
 <li> Chris Kennedy: <a href=https://kennedyforillinois.com/about/>https://kennedyforillinois.com/about/</a></li>
 </ul>
+<BR/>
+<BR/>
+The data in this app comes from <a href=http://www.elections.il.gov/>Illinois State Board of Elections</a> via <a href=https://illinoissunshine.org/>Illinois Sunshine</a>, a project by the <a href=http://www.ilcampaign.org/>Illinois Campaign for Political Reform (ICPR)</a>. This project is not affiliated with ICPR, and neither this project nor ICPR endorse any of the candidates or parties shown in the app. 
 <BR/>
 <BR/>
 
