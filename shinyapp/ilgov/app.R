@@ -99,7 +99,7 @@ server <- function(input, output) {
                                                         
                                                         
                                                         
-                                                        plot2 <- ggplot(df2,aes(x=`Candidate Name`, y = `amtbin`, text = paste('Candidate Name:', df2$`Candidate Name`,'<br>Amount of Donation:', df2$`Amount of Donation`, '<br>Donor:', ifelse(df2$Iscorp=="Individual",paste(df2$`Donor First Name`,df2$`Donor Last Name`, '<br> Donor occupation:',df2$`Donor Occupation`),df2$Organization))))+
+                                                        plot2 <- ggplot(df2,aes(x=`Candidate Name`, y = `amtbin`, text = paste('<br>Donor:', ifelse(df2$Iscorp=="Individual",paste(df2$`Donor First Name`,df2$`Donor Last Name`, '<br> Donor occupation:',df2$`Donor Occupation`),df2$Organization),'<br>Amount of Donation:', df2$`Amount of Donation` )))+
                                                         geom_jitter(aes(size = `Amount of Donation`,colour = `Iscorp`, alpha = 0.1), width = 0.2)+
                                                         scale_size_continuous(breaks = c(100, 1000, 100000, 1000000),  range= c(1,15))+
                                                           guides(alpha = FALSE)+
@@ -107,7 +107,7 @@ server <- function(input, output) {
                                                           guides(size = FALSE)+
                                                           
                                                           labs(title = "Details of Donations to Candidates", x="Candidate Name", y="Amount Given")
-                                                        
+                                                    
                                                         
                                                            
                                                         
