@@ -6,6 +6,7 @@
 # Fixed bug data$Corporation -> data$Organization#
 # Added visualization of details of donations per candidate as bubble chart. Each bubble is one donation, colored by
 # whether it is an individual or organization. Hovering over the bubble gives the donor's name and occupation
+#Removed candidate name to make the hover text more concise
 
 # Set up location
 # setwd("ILGov2018/shinyapp/ilgov/")
